@@ -158,7 +158,7 @@ This tool is for educational purposes and personal use only. Users are responsib
 - Using the tool responsibly and ethically
 - Not overloading ICBC servers
 
-## Author
+## Original Author
 
-**Telegram:** [@live4code](https://t.me/live4code)  
-**Email:** steven.marelly@gmail.com
+**steven.marelly:** 
+**My Email:** loading800@gmail.com
