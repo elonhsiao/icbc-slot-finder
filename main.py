@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from datetime import datetime
 import imaplib
 import httpx
@@ -6,6 +7,13 @@ import time
 import pytz
 import re
 import os
+import winsound
+import time
+import sys
+import threading
+
+# Load environment variables early so CONFIG picks them up when the module is imported
+load_dotenv()
 
 CONFIG = {
     "login_url": "https://onlinebusiness.icbc.com/deas-api/v1/webLogin/webLogin",
@@ -30,8 +38,8 @@ CONFIG = {
         "licenseNumber": os.getenv("USER_LICENSE_NUMBER")
     },
 
-    # Duncan
-    "location_ids": [214],
+    # Duncan Location IDs are read from the .env file
+    "location_ids": [int(loc_id) for loc_id in os.getenv("LOCATION_IDS", "214").split(',')],
 
     "gmail": {
         "email": os.getenv("USER_GMAIL"),
@@ -79,6 +87,22 @@ def validate_config():
     return True
 
 
+def print_env_status():
+    """Print whether required environment variables are present (but never print their values)."""
+    required_vars = [
+        "USER_LAST_NAME",
+        "USER_LICENSE_NUMBER",
+        "USER_KEYWORD",
+        "USER_GMAIL",
+        "USER_GMAIL_APP_PASSWORD",
+    ]
+
+    print("Environment variable status:")
+    for var in required_vars:
+        status = "SET" if os.getenv(var) else "MISSING"
+        print(f"  {var}: {status}")
+
+
 def refresh_token():
     global current_token, last_token_refresh, drvr_id
     try:
@@ -91,7 +115,16 @@ def refresh_token():
                     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36 OPR/116.0.0.0"
                 }
             )
-            response.raise_for_status()
+            # If the server returns a non-2xx status, print helpful diagnostics
+            if not response.is_success:
+                print(f"Auth request failed with status {response.status_code}")
+                try:
+                    # Print response body to help debugging (no env var values are printed here)
+                    print("Response body:")
+                    print(response.text)
+                except Exception:
+                    print("Failed to read response body")
+                response.raise_for_status()
 
             auth_header = response.headers.get('Authorization')
             if auth_header and auth_header.startswith('Bearer '):
@@ -378,42 +411,40 @@ def book_appointment(booked_ts):
         return False
 
 
+# This global event will be used to signal the sound thread to stop
+stop_alert = threading.Event()
+
+def play_alert_sound():
+    """Plays a continuous beep sound until the stop_alert event is set."""
+    while not stop_alert.is_set():
+        winsound.Beep(800, 500) # Beep for 0.5 seconds
+        time.sleep(0.5)        # Wait for 0.5 seconds
+
 def auto_book_earliest_appointment():
     appointment = get_earliest_appointment()
     if not appointment:
         print("No suitable dates available for booking")
         return False
 
-    print(f"Found early date: {appointment['appointmentDt']['date']}")
+    print("="*50)
+    print(f"!!! APPOINTMENT FOUND: {appointment['appointmentDt']['date']} !!!")
+    print("="*50)
 
-    booked_ts = lock_appointment(appointment)
-    if not booked_ts:
-        return False
+    # Start the alert sound in a separate thread
+    alert_thread = threading.Thread(target=play_alert_sound)
+    alert_thread.start()
 
-    if not send_otp_email(booked_ts):
-        return False
+    # Wait for the user to press Enter to stop the alert
+    input("Press Enter to stop the alert and exit the script...")
 
-    otp_code = None
-    for _ in range(20):
-        time.sleep(10)
-        otp_code = get_otp_from_email()
-        if otp_code:
-            break
+    # Signal the sound thread to stop and wait for it to finish
+    stop_alert.set()
+    alert_thread.join()
 
-    if not otp_code:
-        print("Failed to get OTP code from email")
-        return False
-
-    if not verify_otp(booked_ts, otp_code):
-        return False
-
-    if not book_appointment(booked_ts):
-        return False
-
-    return True
-
+    sys.exit("Script stopped by user after finding an appointment.")
 
 def main():
+    # .env already loaded at module import time
     if not validate_config():
         return
         
