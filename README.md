@@ -102,6 +102,17 @@ What the script does:
 - Displays status updates in the console
 - Automatically books when a suitable appointment is found
 - Stops execution after successful booking
+ - Plays an audible alert (continuous beep) when an appointment is found so you notice immediately
+
+Alert sound
+-----------------
+When the script finds a suitable appointment it starts a continuous audible alert (a repeated beep). The script then waits for the user to press Enter; when you press Enter the alert stops and the script exits.
+
+Notes about the alert:
+- The alert is implemented using the Windows `winsound.Beep()` API (so it will sound on Windows). If you run the script on a different OS the alert may not play.
+- To stop the alert: press Enter in the console where the script is running. The script will signal the sound thread to stop and then exit.
+- To disable the audible alert permanently, edit `main.py` and comment out the alert thread start/stop block in `auto_book_earliest_appointment()` (the lines that create `alert_thread`, call `alert_thread.start()`, wait for input, call `stop_alert.set()` and `alert_thread.join()`).
+
 
 ## Sample Output
 
