@@ -1,10 +1,17 @@
-## 中文简洁说明
+## 中文简洁说明Chinese
 原项目获取验证码并自动预定有点问题. 由于我没仔细研究,所以增加了以下功能
 1. 运行 python main.py 后, 如果有合适的时间段, 会让你电脑发出声音. 目的相当于是双保险. 比如你在刷剧,听到声音后可以手动打开, 并手动预定时间段.
 2. 期待你的提建议. 我会的我就会帮忙做. 我的邮箱 loading800@gmail.com
 3. 好心的朋友能提供机会让我参加全栈项目吗? 纯小白,但是我想入行了..坐标加拿大.
 4. 有糊口的工作也可以叫我. 身体健康不吸烟不喝酒,可做重活. 灵活. 没有不良癖好习惯.全国可飞.
 5. 刚来加拿大BC温哥华,目前在ICBC跳考Class 5.时间等太久就用这个预约到了.(哭死,第一次路考前几天路考翻车,继续用本软件预约到3周后的.)
+
+## English Brief
+1. Run `python main.py`, and if there’s a good time slot, your computer’s gonna beep. It’s like a backup plan—if you’re binge-watching, you’ll hear it, pop open the program, and book the slot yourself.
+2. Hit me with your suggestions! I’ll help with whatever I can. My email’s loading800@gmail.com.
+3. Any nice folks out there got a full-stack project I could jump into? Total newbie, but I’m dying to get into it. I’m in Canada.
+4. Also, if there’s any job to pay the bills, I’m your guy. Healthy, don’t smoke or drink, can handle tough work, super flexible, no bad habits. I’ll fly anywhere in the country.
+5. Just landed in Vancouver, BC, and I’m prepping for my ICBC Class 5 road test. Wait times were crazy, so I used this program to snag a slot. (Ugh, crashed and burned my first road test a few days ago, but I booked another one for three weeks out with this tool.)
 
 # ICBC Road Test Catcher
 
@@ -134,6 +141,9 @@ Booking completed successfully!
 
 Common ICBC locations and their IDs:
 - Duncan: 214
+- Abbotsford: 1
+If you don't know how to find Location IDs, feel free to contact me. :)
+如果你不知道怎么找到Location ID, 可以联系我. :)
 
 To find other location IDs, inspect network traffic in your browser when selecting different locations on the ICBC website.
 
