@@ -10,12 +10,8 @@
 
 An automated Python script that monitors and books available road test appointments at ICBC (Insurance Corporation of British Columbia) locations in Canada.
 
-This repository has been converted to a pure Python project. All Docker-related files and instructions were removed.
+This repository has been converted to a pure Python project.
 
-## What changed
-
-- Removed Docker and Docker Compose configuration. This is now a local Python application.
-- Deleted `docker-compose.yml` and `Dockerfile` from the repository.
 
 ## Features
 
@@ -33,7 +29,7 @@ This repository has been converted to a pure Python project. All Docker-related 
 1. Authentication: Logs into ICBC system using your credentials
 2. Monitoring: Continuously scans for available appointments
 3. Booking Process: When a suitable slot is found:
-   - Locks the appointment temporarily
+   - Locks the appointment temporarily and Alert sound from your PC!
    - Requests OTP code via email
    - Automatically retrieves OTP from Gmail
    - Verifies the OTP code
@@ -50,8 +46,8 @@ This repository has been converted to a pure Python project. All Docker-related 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/l1ve4code/icbc-road-test-catcher.git
-cd icbc-road-test-catcher
+git clone https://github.com/elonhsiao/icbc-slot-finder.git
+cd icbc-slot-finder
 ```
 
 2. (Recommended) Create and activate a virtual environment:
