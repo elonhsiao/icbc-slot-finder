@@ -88,14 +88,21 @@ Set the following environment variables (either in a `.env` file or in your shel
 Example `.env` file:
 
 ```
-USER_LAST_NAME=YourLastName
-USER_LICENSE_NUMBER=1234567
-USER_KEYWORD=your_keyword_here
-USER_GMAIL=your.email@gmail.com
-USER_GMAIL_APP_PASSWORD=your_16_character_app_password
-DESIRED_DATE_START=2025-06-24
-DESIRED_DATE_END=2025-06-30
-LOCATION_IDS=214
+# ICBC Credentials
+USER_LAST_NAME="your last name"
+USER_LICENSE_NUMBER="your license number"
+USER_KEYWORD="your keyword"
+
+# Gmail Credentials
+USER_GMAIL="your gmail"
+USER_GMAIL_APP_PASSWORD="your 16 password"
+
+# Desired Date Range
+DESIRED_DATE_START="2025-09-15"
+DESIRED_DATE_END="2025-10-02"
+
+# Location IDs (comma-separated for multiple locations)
+LOCATION_IDS="1"
 ```
 
 **Note**: You must enable 2-factor authentication on Gmail and generate an App Password. Regular Gmail passwords won't work.
@@ -130,11 +137,17 @@ Notes about the alert:
 ```
 Token refreshed. drvrID: 12345678
 Script started. Beginning monitoring for available dates...
-Found 3 available dates for location 214
-Date 2025-06-25 successfully locked
-OTP code sent to email
-OTP code successfully verified
-Booking completed successfully!
+Found 1 available dates for location 1
+No suitable dates available for booking
+Error checking available dates: The read operation timed out
+No suitable dates available for booking
+Token refreshed. drvrID: 12345678
+Found 2 available dates for location 1
+==================================================
+!!! APPOINTMENT FOUND: 2025-09-26 !!!
+==================================================
+Press Enter to stop the alert and exit the script...
+Script stopped by user after finding an appointment.
 ```
 
 ## Location IDs
